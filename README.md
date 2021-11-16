@@ -14,3 +14,5 @@ The database creation logic above will create the following users:
 * [Install and Configure Windows Terminal](https://gist.github.com/dahlsailrunner/ec99e195b2a4903748a74df64a1f1a94)
 * [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
+## Config cert with linux terminal]
+* https://gist.github.com/dahlsailrunner/679e6dec5fd769f30bce90447ae80081
