@@ -91,12 +91,12 @@ namespace Globomantics.IdentityServer.Identity
                 user.PasswordModifiedDate = user.CreateDate;
                 await _db.ExecuteAsync(
                     @"
-INSERT INTO GlobomanticsUser 
-( LoginName, PasswordHash, PasswordModifiedDate, LastLoginDate, CreateDate, Status, SecurityStamp, 
-    EmailConfirmed, TwoFactorEnabled, AccessFailedCount, LockoutEnd, LockoutEnabled )
-VALUES
-( @LoginName, @PasswordHash, @PasswordModifiedDate,@LastLoginDate, @CreateDate, 1, @SecurityStamp, 
-    @EmailConfirmed, @TwoFactorEnabled, @AccessFailedCount, @LockoutEnd, @LockoutEnabled )",
+                    INSERT INTO GlobomanticsUser 
+                    ( LoginName, PasswordHash, PasswordModifiedDate, LastLoginDate, CreateDate, Status, SecurityStamp, 
+                        EmailConfirmed, TwoFactorEnabled, AccessFailedCount, LockoutEnd, LockoutEnabled )
+                    VALUES
+                    ( @LoginName, @PasswordHash, @PasswordModifiedDate,@LastLoginDate, @CreateDate, 1, @SecurityStamp, 
+                        @EmailConfirmed, @TwoFactorEnabled, @AccessFailedCount, @LockoutEnd, @LockoutEnabled )",
                     user);
                 result = IdentityResult.Success;
 
@@ -122,21 +122,21 @@ VALUES
             {
                 await _db.ExecuteAsync(
                     @"
-UPDATE GlobomanticsUser 
-SET PasswordHash = @PasswordHash 
-   ,PasswordSalt = @PasswordSalt
-   ,LoginName = @LoginName
-   ,PasswordModifiedDate = @PasswordModifiedDate
-   ,LastLoginDate = @LastLoginDate
-   ,CreateDate = @CreateDate
-   ,Status = @Status
-   ,SecurityStamp = @SecurityStamp
-   ,EmailConfirmed = @EmailConfirmed
-   ,TwoFactorEnabled = @TwoFactorEnabled
-   ,AccessFailedCount = @AccessFailedCount
-   ,LockoutEnd = @LockoutEnd
-   ,LockoutEnabled = @LockoutEnabled
-WHERE UserId = @UserId",
+                    UPDATE GlobomanticsUser 
+                    SET PasswordHash = @PasswordHash 
+                       ,PasswordSalt = @PasswordSalt
+                       ,LoginName = @LoginName
+                       ,PasswordModifiedDate = @PasswordModifiedDate
+                       ,LastLoginDate = @LastLoginDate
+                       ,CreateDate = @CreateDate
+                       ,Status = @Status
+                       ,SecurityStamp = @SecurityStamp
+                       ,EmailConfirmed = @EmailConfirmed
+                       ,TwoFactorEnabled = @TwoFactorEnabled
+                       ,AccessFailedCount = @AccessFailedCount
+                       ,LockoutEnd = @LockoutEnd
+                       ,LockoutEnabled = @LockoutEnabled
+                    WHERE UserId = @UserId",
                     user);
                 result = IdentityResult.Success;
 
@@ -161,8 +161,17 @@ WHERE UserId = @UserId",
             if (userId == null)
             {
                 throw new ArgumentNullException(nameof(userId));
-            }            
-
+            }
+            if (userId == "3")
+            {
+                return new CustomUser
+                {
+                    UserId = 3,
+                    LoginName = "kim@mars.com",
+                    PasswordHash = "BvJyJI8wmY9r/4NgVud2EwwbDqNzK9UQ3+Oxy/erYoq3aUm+E1wCgwkyvkagdkucs/LaBS56ddTWS1xogL7msAeM0We37suklRIt6QFSWlqef//SxDcKO8I7bpConj/0ydGu8ix9Fpwi1R5IoEjHns+qfR6hII1Rn0POHTz6UdA=",
+                    EmailConfirmed = true
+                };
+            }
             return await _db.QuerySingleOrDefaultAsync<CustomUser>(
                 "SELECT * FROM GlobomanticsUser WHERE UserId = @userId",
                 new { userId });
@@ -176,7 +185,26 @@ WHERE UserId = @UserId",
             {
                 throw new ArgumentNullException(nameof(normalizedUserName));
             }
-            
+            if (string.Equals(normalizedUserName, "kim@mars.com", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new CustomUser
+                {
+                    UserId = 3,
+                    LoginName = "kim@mars.com",
+                    PasswordHash = "BvJyJI8wmY9r/4NgVud2EwwbDqNzK9UQ3+Oxy/erYoq3aUm+E1wCgwkyvkagdkucs/LaBS56ddTWS1xogL7msAeM0We37suklRIt6QFSWlqef//SxDcKO8I7bpConj/0ydGu8ix9Fpwi1R5IoEjHns+qfR6hII1Rn0POHTz6UdA=",
+                    EmailConfirmed = true
+                };
+            }
+            if (string.Equals(normalizedUserName, "stanley@mars.com", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new CustomUser
+                {
+                    LoginName = "stanley@mars.com",
+                    Email = "stanley@mars.com",
+                    EmailConfirmed = true
+                };
+            }
+
             var result = await _db.QuerySingleOrDefaultAsync<CustomUser>(
                 "SELECT * FROM GlobomanticsUser WHERE LoginName = @LoginName",
                 new { LoginName = normalizedUserName });

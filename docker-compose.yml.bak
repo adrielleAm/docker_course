@@ -49,7 +49,7 @@ services:
     networks:
       - globonet
 
-  globalseq:
+  globoseq:
     image: datalust/seq
     restart: unless-stopped
     ports:

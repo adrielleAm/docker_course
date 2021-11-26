@@ -13,14 +13,15 @@ http {
 
     upstream ui {
         server globomantics.ui:5005;
-    }   
-    
-    upstream globoapi {
-        server globomantics.api:5006;
-    }  
+    }
 
+     upstream globoapi {
+        server globomantics.api:5006;
+    }
+    
     server {        
         listen 44395 ssl;
+
         ssl_certificate /etc/ssl/certs/id-local.globomantics.com.crt;
         ssl_certificate_key /etc/ssl/private/id-local.globomantics.com.key;
         
@@ -42,10 +43,11 @@ http {
             proxy_buffers               4 256k;
             proxy_busy_buffers_size     256k;
         }
-    }   
-
-    server {        
+    }  
+    
+     server {        
         listen 44395 ssl;
+
         ssl_certificate /etc/ssl/certs/www-local.globomantics.com.crt;
         ssl_certificate_key /etc/ssl/private/www-local.globomantics.com.key;
         
@@ -66,9 +68,9 @@ http {
             proxy_buffer_size           128k;
             proxy_buffers               4 256k;
             proxy_busy_buffers_size     256k;
-        }       
-        location /api/ {
-            proxy_pass         http://globoapi/api/;
+        }
+          location /api/ {
+            proxy_pass         http://globoapi/api;
             proxy_redirect     off;
             proxy_http_version 1.1;
             proxy_cache_bypass $http_upgrade;
@@ -82,7 +84,6 @@ http {
             proxy_buffer_size           128k;
             proxy_buffers               4 256k;
             proxy_busy_buffers_size     256k;
-        }        
-
-    }   
+        }
+    } 
 }
